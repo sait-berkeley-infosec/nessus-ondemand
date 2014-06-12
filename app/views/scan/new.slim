@@ -1,0 +1,44 @@
+header class="navbar navbar-default" role="navigation"
+  div class="container-fluid"
+    div class="navbar-header"
+      button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapsed-navbar"
+        span class="sr-only" Toggle navigation
+        span class="icon-bar"
+        span class="icon-bar"
+        span class="icon-bar"
+      a class="navbar-brand" href="#" OnDemand
+    div class="collapse navbar-collapse" id="collapsed-navbar"
+      div class="navbar-left"
+        ul class="nav navbar-nav"
+          li class="active"
+            a href="#" data-toggle="modal" data-target=".about-modal" About
+      div class="navbar-right"
+        ul class="nav navbar-nav"
+          li class="active"
+            a href="#" Signed in as Blank Blank
+= form_for :scan do |s|
+  <p>
+    div class="input-group"
+      = s.text_field :targets, :class => "form-control", :placeholder => "Input a Berkeley IP - net masks are OK!"
+      span class="input-group-addon"
+        i class="fa fa-desktop fa-lg"
+  </p>
+  <p>
+    div class="input-group"
+      = s.text_field :time, :id => "datepicker", :readonly => "", :class => "form-control", :placeholder => "Click on me!"
+      span class="input-group-addon"
+        i class="fa fa-calendar fa-lg"
+  </p>
+  <p>
+    = s.submit "Scan Me!", :type => "button", :class => "btn btn-primary btn-lg btn-block"
+  </p>
+div class="modal fade about-modal" tabindex="-1" role="dialog" aria-hidden="true"
+  div class="modal-dialog modal-lg"
+    div class="modal-content"
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-hidden="true" &times;
+        h4 class="modal-title" id="aboutLabel" About OnDemand
+      div class="modal-body"
+        p STUFF THINGS STUFF
+      div class="modal-footer"
+        button type="button" class="btn btn-default" data-dismiss="modal" Close
