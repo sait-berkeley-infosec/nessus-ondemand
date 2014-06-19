@@ -2,3 +2,18 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import 'bootstrap';
+
+body {
+    background: image-url("bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.container {
+    max-width: 730px;
+}
+
+.form-container {
+    padding-top: 20%;
+    max-width: 400px;
+    margin: auto;
+}

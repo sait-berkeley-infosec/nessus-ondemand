@@ -15,3 +15,7 @@
  *= require_tree .
  *= require_self
  */
+@import "compass/css3/border-radius";
+.navbar {
+    @include border-radius(0);
+}

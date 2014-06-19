@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title Scan-on-Demand
+  = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+  = javascript_include_tag 'application', 'data-turbolinks-track' => true
+  = csrf_meta_tags
+
+  body
+    header class="navbar navbar-default" role="navigation"
+      div class="container-fluid"
+        div class="navbar-header"
+          button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapsed-navbar"
+            span class="sr-only" Toggle navigation
+            span class="icon-bar"
+            span class="icon-bar"
+            span class="icon-bar"
+          a class="navbar-brand" href="#" OnDemand
+        div class="collapse navbar-collapse" id="collapsed-navbar"
+          div class="navbar-left"
+            ul class="nav navbar-nav"
+              li class="active"
+                a href="#" data-toggle="modal" data-target=".about-modal" About
+          div class="navbar-right"
+            ul class="nav navbar-nav"
+              li class="active"
+                a href="#" Signed in as Blank Blank
+    = yield
