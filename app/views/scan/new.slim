@@ -9,9 +9,9 @@ div class="container"
       = flash[:error].html_safe
       ul
         - @scan.errors.full_messages.each do |e|
-          <li>
+          li
             = e
-          </li>
+
   div class="form-container"
     = form_for @scan do |s|
       <p>
@@ -28,13 +28,4 @@ div class="container"
         = s.submit "Scan Me!", :class => "btn btn-primary btn-lg btn-block"
       </p>
 
-div class="modal fade about-modal" tabindex="-1" role="dialog" aria-hidden="true"
-  div class="modal-dialog modal-lg"
-    div class="modal-content"
-      div class="modal-header"
-        button type="button" class="close" data-dismiss="modal" aria-hidden="true" &times;
-        h4 class="modal-title" id="aboutLabel" About OnDemand
-      div class="modal-body"
-        p STUFF THINGS STUFF
-      div class="modal-footer"
-        button type="button" class="btn btn-default" data-dismiss="modal" Close
+= render partial: "about"

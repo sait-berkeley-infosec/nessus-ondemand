@@ -9,27 +9,23 @@ class ScanController < ApplicationController
 
   def create
     s_params = scan_params
-    old_time = s_params[:time]
-    no_error = true
-    Rails.logger.debug "Trying to save time #{s_params[:time]}"
     begin
       s_params[:time] = DateTime.strptime(s_params[:time], '%d %B %Y - %H:%M')
     rescue
-      no_error = false
+      s_params[:time] = ""
     end
     s_params[:user] = session[:user_id]
     @scan = Scan.new s_params
     # TODO: Create tagged logging for the user
     Rails.logger.debug "Attempting to create new scan..."
     Rails.logger.debug @scan.inspect
-    if no_error && @scan.save
+    if @scan.save
       Rails.logger.warn "Scan ##{@scan.id} created!"
       flash[:success] = "<b>Scan successfully created!</b> Check your user page for more information!"
       redirect_to new_scan_path
     else
       Rails.logger.debug "Creation failed!"
       Rails.logger.debug @scan.errors.full_messages
-      @scan.time = old_time
       flash[:error] = "<b>Oops!</b> There were some problems with your scan:"
       render :action => 'new'
     end
