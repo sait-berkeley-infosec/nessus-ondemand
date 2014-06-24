@@ -29,8 +29,6 @@ gem 'pundit', '~>0.2.3'
 # Pikaday!
 gem 'therubyracer', '~>0.12.1'
 gem 'jquery-rails', '~>3.1.0'
-gem 'bootstrap-datepicker-rails'
-gem 'bootstrap-form'
 
 # Form stuff
 gem 'placeholder-gem', '~>3.0.2'

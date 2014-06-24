@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
+  get '/logout', :to => 'session#destroy', :as => :logout
+  get '/auth/:provider/callback', :to => 'session#create'
+  get '/login', :to => redirect('/auth/cas/'), :as => :login
+  get '/auth/failure', :to => 'session#failure'
+  get '/portal', :to => 'session#new', :as => :portal
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  resources :scan
+  resources :scans, :controller => "scan"
 
   # You can have the root of your site routed with "root"
   root 'scan#new'

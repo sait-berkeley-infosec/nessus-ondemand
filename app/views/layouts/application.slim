@@ -23,6 +23,17 @@ html
                 a href="#" data-toggle="modal" data-target=".about-modal" About
           div class="navbar-right"
             ul class="nav navbar-nav"
-              li class="active"
-                a href="#" Signed in as Blank Blank
+              li class="dropdown"
+                - @name = "Nobody"
+                - @user = User.find_by_calnet(session[:user_id])
+                - if @user
+                  - @name = @user.name
+                a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                  = "Signed in as #{@name}"
+                  b class="caret"
+                ul class="dropdown-menu"
+                  li
+                    a href="#" My Scans
+                  li
+                    a href="#" Logout
     = yield

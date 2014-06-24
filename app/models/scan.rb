@@ -11,9 +11,9 @@ class AddressValidator < ActiveModel::EachValidator
           internal = true
         end
       end
-      record.errors.add(attribute, "is not an internal IP") unless internal
+      record.errors.add(attribute, "are not all internal addresses") unless internal
     rescue
-      record.errors.add(attribute, "is not an IP")
+      record.errors.add(attribute, "are not all valid addresses")
     end
   end
 end

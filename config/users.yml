@@ -1,7 +1,9 @@
 Users:
     Admin:
         Nicholas Wold:
-            calnet: "000000"
+            calnet: "969517"
             email: nicholas.wold@berkeley.edu
     Standard:
-        John Doe: "000001"
+        John Doe:
+            calnet: "000001"
+            email: nobody@odyssey.edu

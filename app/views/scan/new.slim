@@ -1,20 +1,31 @@
 div class="container"
+  - if flash[:success]
+    div class="alert alert-success alert-dismissable"
+      button type="button" class="close" data-dismiss="alert" aria-hidden="true" &times;
+      = flash[:success].html_safe
+  - if flash[:error]
+    div class="alert alert-danger alert-dismissable"
+      button type="button" class="close" data-dismiss="alert" aria-hidden="true" &times;
+      = flash[:error].html_safe
+      ul
+        - @scan.errors.full_messages.each do |e|
+          <li>
+            = e
+          </li>
   div class="form-container"
-    = form_for :scan do |s|
+    = form_for @scan do |s|
       <p>
         div class="input-group"
           = s.text_field :targets, :class => "form-control", :placeholder => "Input a Berkeley IP - net masks are OK!"
-          span class="input-group-addon"
-            i class="fa fa-desktop fa-lg"
+          i class="fa fa-desktop fa-fw input-group-addon"
       </p>
       <p>
         div class="input-group"
-          = s.text_field :time, :id => "datepicker", :readonly => "", :class => "form-control", :placeholder => "Click on me!"
-          span class="input-group-addon"
-            i class="fa fa-calendar fa-lg"
+          = s.text_field :time, :class => "form-control form_datetime date", :placeholder => "Pick a time!"
+          i class="fa fa-clock-o fa-fw input-group-addon"
       </p>
       <p>
-        = s.submit "Scan Me!", :type => "button", :class => "btn btn-primary btn-lg btn-block"
+        = s.submit "Scan Me!", :class => "btn btn-primary btn-lg btn-block"
       </p>
 
 div class="modal fade about-modal" tabindex="-1" role="dialog" aria-hidden="true"

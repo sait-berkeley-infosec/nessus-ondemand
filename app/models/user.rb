@@ -13,6 +13,17 @@ class User
     @@all_users<< self
   end
 
+  def self.find_by_calnet(uid)
+    Rails.logger.info "Trying to find User UID #{uid}..."
+    @@all_users.each do |user|
+      Rails.logger.debug "Does #{user.calnet} == #{uid}?"
+      if user.calnet == uid
+        return user
+      end
+    end
+    return nil
+  end
+
   def self.all
     @@all_users
   end
