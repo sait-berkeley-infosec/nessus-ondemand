@@ -14,5 +14,4 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require placeholder
-//= require moment
 //= require_tree .
