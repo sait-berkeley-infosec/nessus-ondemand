@@ -12,4 +12,5 @@ Dependencies
 
 TODO
 ====
-  * Write "View As" function for visual tests
+  * Make user#show
+  * Improve scan#show
