@@ -13,4 +13,3 @@ Dependencies
 TODO
 ====
   * Make user#show
-  * Improve scan#show

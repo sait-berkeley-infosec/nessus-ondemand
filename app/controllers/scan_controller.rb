@@ -32,11 +32,6 @@ class ScanController < ApplicationController
     end
   end
 
-  def show
-    @scan = Scan.find params[:id]
-    authorize @scan
-  end
-
   def edit
     @scan = Scan.find params[:id]
     authorize @scan
@@ -47,10 +42,10 @@ class ScanController < ApplicationController
     authorize @scan
     Rails.logger.debug "Attempting to update Scan ##{@scan.id}..."
     Rails.logger.debug @scan.inspect
-    if @scan.update_attributes params[:scan]
+    if @scan.update_attributes scan_update_params
       Rails.logger.warn "Scan ##{@scan.id} updated!"
       Rails.logger.debug @scan.inspect
-      redirect_to scan_path
+      redirect_to edit_scan_path(@scan)
     else
       Rails.logger.debug "Updating failed!"
       Rails.logger.debug @scan.errors
@@ -69,5 +64,9 @@ class ScanController < ApplicationController
   private
     def scan_params
       params.require(:scan).permit(:targets, :time)
+    end
+
+    def scan_update_params
+      params.require(:scan).permit(:targets, :time, :policy)
     end
 end

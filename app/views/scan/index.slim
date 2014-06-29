@@ -15,6 +15,6 @@ div class="container"
                td 
                  = s.id
                td 
-                 = link_to Address.find(s.targets).location, s
+                 = link_to Address.find(s.targets).location, edit_scan_path(s)
                td 
-                 = link_to user.name, user_path(@current_user.id)
+                 = link_to @current_user.name, user_path(@current_user.id)

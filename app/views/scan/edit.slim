@@ -1,0 +1,41 @@
+div class="container"
+    div class="panel panel-default"
+      div class="panel-heading" 
+        h3 class="panel-title" Viewing Scan...
+      div class="panel-body"
+        = form_for @scan do |s|
+            table class="table"
+              thead
+                tr
+                  th Information
+                  th 
+              tbody
+                tr
+                  td
+                    strong Requested by...
+                  td
+                    - user = User.find_by_calnet(@scan.user)
+                    = link_to user.name, user_path(user.id)
+                tr
+                  td
+                    strong Targets...
+                  td
+                    = s.text_field :targets, :class => "form-control"
+                tr
+                  td
+                    strong Scheduled for...
+                  td
+                    = s.text_field :time, :class => "form_datetime date form-control"
+                tr
+                  td
+                    strong Was going to use...
+                  td
+                    = s.text_field :policy, :class => "form-control"
+                - if @scan.results
+                  tr
+                    td
+                      strong Had a risk level of...
+                    td
+                      = @scan.results
+            p
+              = s.submit "Update!", :class => "btn btn-primary btn-lg btn-block"
