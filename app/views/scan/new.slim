@@ -1,16 +1,4 @@
 div class="container"
-  - if flash[:success]
-    div class="alert alert-success alert-dismissable"
-      button type="button" class="close" data-dismiss="alert" aria-hidden="true" &times;
-      = flash[:success].html_safe
-  - if flash[:error]
-    div class="alert alert-danger alert-dismissable"
-      button type="button" class="close" data-dismiss="alert" aria-hidden="true" &times;
-      = flash[:error].html_safe
-      ul
-        - @scan.errors.full_messages.each do |e|
-          li
-            = e
 
   div class="form-container"
     = form_for @scan do |s|

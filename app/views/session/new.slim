@@ -1,3 +1,12 @@
-STUFF
-
-= link_to "Login!", login_path
+div class="container sess"
+  div class="page-header"
+    h1 
+      | Welcome to On Demand
+  p 
+    | Use of this application is limited to select members of SA-IT. If you feel that your department has a valid need for the services provided by Scan On Demand, then send us an email at 
+    kbd
+      | security@rescomp.berkeley.edu 
+    | and we will get back to you within three working days.
+  p If you are authorized to use Scan On Demand, you can login using CAS. Easy, right?
+  p
+    = link_to "Login!", login_path, class: "btn btn-primary btn-lg"

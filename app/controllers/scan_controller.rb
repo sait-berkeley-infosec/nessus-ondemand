@@ -1,6 +1,10 @@
 class ScanController < ApplicationController
   def index
-    @scans = Scan.all
+    if @current_user.admin?
+      @scans = Scan.all
+    else
+      @scans = Scan.find(:user => @current_user)
+    end
   end
 
   def new
@@ -14,7 +18,7 @@ class ScanController < ApplicationController
     rescue
       s_params[:time] = ""
     end
-    s_params[:user] = session[:user_id]
+    s_params[:user] = @current_user.calnet
     @scan = Scan.new s_params
     # TODO: Create tagged logging for the user
     Rails.logger.debug "Attempting to create new scan..."
@@ -33,14 +37,17 @@ class ScanController < ApplicationController
 
   def show
     @scan = Scan.find params[:id]
+    authorize @scan, :update?
   end
 
   def edit
     @scan = Scan.find params[:id]
+    authorize @scan, :update?
   end
 
   def update
     @scan = Scan.find params[:id]
+    authorize @scan
     Rails.logger.debug "Attempting to update Scan ##{@scan.id}..."
     Rails.logger.debug @scan.inspect
     if @scan.update_attributes params[:scan]
@@ -56,6 +63,7 @@ class ScanController < ApplicationController
 
   def destroy
     @scan = Scan.find params[:id]
+    authorize @scan
     @scan.destroy
     Rails.logger.warn "Scan ##{@scan.id} destroyed!"
     redirect_to scans_path

@@ -1,0 +1,21 @@
+div class="container"
+    div class="panel panel-default"
+      div class="panel-heading" 
+        h3 class="panel-title" Requested Scans
+      div class="panel-body"
+       table class="table table-striped"
+         thead
+           tr
+             th #
+             th Address
+             th Requestor
+         tbody
+           - @scans.each do |s|
+             tr
+               td 
+                 = s.id
+               td 
+                 = link_to s.targets, s
+               td 
+                 - user = User.find_by_calnet(s.user)
+                 = link_to user.name, user_path(user.id)

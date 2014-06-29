@@ -1,6 +1,7 @@
 class User
   include ActiveAttr::Model
 
+  attribute :id, :type => Integer
   attribute :name, :type => String
   attribute :calnet, :type => Integer
   attribute :email, :type => String
@@ -11,6 +12,11 @@ class User
   def initialize(attributes={})
     super
     @@all_users<< self
+    self.id = @@all_users.length
+  end
+
+  def admin?
+    return admin
   end
 
   def self.find_by_calnet(uid)
@@ -22,6 +28,10 @@ class User
       end
     end
     return nil
+  end
+
+  def self.find(id)
+    @@all_users[id.to_i]
   end
 
   def self.all
