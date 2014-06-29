@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe ScanController do
+  before do
+    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:cas]
+  end
 
   describe "GET 'index'" do
     it "returns http success" do
