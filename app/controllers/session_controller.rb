@@ -1,5 +1,5 @@
 class SessionController < ApplicationController
-  skip_before_filter :check_sign_in, :only => [:create, :new, :destroy, :failure]
+  skip_before_filter :check_sign_in
 
   def new
   end
@@ -24,6 +24,6 @@ class SessionController < ApplicationController
   end
 
   def failure
-    render :text => "SOMETHING BAD HAPPENED"
+    render status: 417
   end
 end

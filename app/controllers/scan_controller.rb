@@ -1,10 +1,6 @@
 class ScanController < ApplicationController
   def index
-    if @current_user.admin?
-      @scans = Scan.all
-    else
-      @scans = Scan.find(:user => @current_user)
-    end
+    @scans = policy_scope(Scan)
   end
 
   def new
@@ -12,21 +8,22 @@ class ScanController < ApplicationController
   end
 
   def create
-    s_params = scan_params
+    s_params = scan_params # Strong params
+
     begin
       s_params[:time] = DateTime.strptime(s_params[:time], '%d %B %Y - %H:%M')
     rescue
-      s_params[:time] = ""
+      s_params[:time] = "" # If a ill-formatted time is given - XSS attempt, most likely
     end
     s_params[:user] = @current_user.calnet
+
     @scan = Scan.new s_params
-    # TODO: Create tagged logging for the user
     Rails.logger.debug "Attempting to create new scan..."
     Rails.logger.debug @scan.inspect
     if @scan.save
       Rails.logger.warn "Scan ##{@scan.id} created!"
       flash[:success] = "<b>Scan successfully created!</b> Check your user page for more information!"
-      redirect_to new_scan_path
+      redirect_to @scan
     else
       Rails.logger.debug "Creation failed!"
       Rails.logger.debug @scan.errors.full_messages
@@ -37,12 +34,12 @@ class ScanController < ApplicationController
 
   def show
     @scan = Scan.find params[:id]
-    authorize @scan, :update?
+    authorize @scan
   end
 
   def edit
     @scan = Scan.find params[:id]
-    authorize @scan, :update?
+    authorize @scan
   end
 
   def update
