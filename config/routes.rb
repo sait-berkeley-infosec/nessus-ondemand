@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   get '/users', :to => 'user#index'
   get '/users/:id', :to => 'user#show', :as => 'user'
+  get '/users/become/:id/', :to => 'user#become'
 
   # You can have the root of your site routed with "root"
   root 'scan#new'

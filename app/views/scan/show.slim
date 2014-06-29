@@ -10,12 +10,11 @@ div class="container"
              th Address
              th Requestor
          tbody
-           - @scans.each do |s|
-             tr
-               td 
-                 = s.id
-               td 
-                 = link_to s.targets, s
-               td 
-                 - user = User.find_by_calnet(s.user)
-                 = link_to user.name, user_path(user.id)
+           tr
+             td 
+               = @scan.id
+             td 
+               = @scan.targets
+             td 
+               - user = User.find_by_calnet(@scan.user)
+               = link_to user.name, user_path(user.id)

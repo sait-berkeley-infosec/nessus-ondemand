@@ -15,7 +15,7 @@ div class="container"
                td 
                  = s.id
                td 
-                 = link_to s.targets, s
+                 = link_to Address.find(s.targets).location, s
                td 
                  - user = User.find_by_calnet(s.user)
                  = link_to user.name, user_path(user.id)
