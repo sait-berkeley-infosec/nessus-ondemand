@@ -1,19 +1,24 @@
-require 'ipaddr'
-
 class AddressValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     begin
-      internal = false
-      ip = IPAddr.new(value)
-      Address.all.each do |a|
-        range = IPAddr.new(a.address)
-        if range.include?(ip)
-          internal = true
-        end
+      valid = Address.find(value)
+      if valid.nil?
+        record.errors.add(attribute, "is not a whitelisted address")
       end
-      record.errors.add(attribute, "are not all internal addresses") unless internal
     rescue
-      record.errors.add(attribute, "are not all valid addresses")
+      record.errors.add(attribute, "is not a valid address")
+    end
+  end
+end
+
+class TimeValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    begin
+      if value.past?
+        record.errors.add(attribute, "is in the past")
+      end
+    rescue NoMethodError
+      record.errors.add(attribute, "can't be blank")
     end
   end
 end
@@ -21,6 +26,6 @@ end
 class Scan < ActiveRecord::Base
   validates :user, presence: true
   validates :targets, presence: true, address: true
-  validates :time, presence: true
+  validates :time, presence: true, time: true
   validates :policy, presence: true
 end
