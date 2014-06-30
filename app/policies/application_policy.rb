@@ -7,11 +7,7 @@ class ApplicationPolicy
   end
 
   def index?
-    scope.where(:user => user.calnet).exists?
-  end
-
-  def show?
-    scope.where(:user => user.calnet).exists?
+    user.admin?
   end
 
   def create?
@@ -23,11 +19,11 @@ class ApplicationPolicy
   end
 
   def update?
-    scope.where(:user => user.calnet).exists?
+    edit?
   end
 
   def edit?
-    update?
+    false
   end
 
   def destroy?

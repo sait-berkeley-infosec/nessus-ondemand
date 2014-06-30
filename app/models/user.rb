@@ -12,7 +12,7 @@ class User
   def initialize(attributes={})
     super
     @@all_users<< self
-    self.id = @@all_users.length
+    self.id = @@all_users.length - 1
   end
 
   def admin?

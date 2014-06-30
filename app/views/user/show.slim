@@ -1,6 +1,26 @@
 div class="container"
     div class="panel panel-default"
       div class="panel-heading" 
+        h3 class="panel-title" Viewing Scan...
+      div class="panel-body"
+        table class="table"
+          thead
+            tr
+              th Information
+              th 
+          tbody
+            tr
+              td
+                strong Name
+              td
+                = @user.name
+            tr
+              td
+                strong UID
+              td
+                = @user.calnet
+    div class="panel panel-default"
+      div class="panel-heading" 
         h3 class="panel-title" Requested Scans
       div class="panel-body"
        table class="table table-striped"

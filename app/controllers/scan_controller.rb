@@ -1,6 +1,7 @@
 class ScanController < ApplicationController
   def index
-    @scans = policy_scope(Scan)
+    @scans = Scan.all
+    authorize @scans
   end
 
   def new
@@ -23,7 +24,7 @@ class ScanController < ApplicationController
     if @scan.save
       Rails.logger.warn "Scan ##{@scan.id} created!"
       flash[:success] = "<b>Scan successfully created!</b> Check your user page for more information!"
-      redirect_to @scan
+      redirect_to edit_scan_path(@scan)
     else
       Rails.logger.debug "Creation failed!"
       Rails.logger.debug @scan.errors.full_messages

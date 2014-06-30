@@ -9,6 +9,8 @@ html
   body
     - if content_for?(:navbar)
       = yield(:navbar)
+    - if content_for?(:flashes)
+      = yield(:flashes)
     = yield
 
     div class="modal fade about-modal" tabindex="-1" role="dialog" aria-hidden="true"

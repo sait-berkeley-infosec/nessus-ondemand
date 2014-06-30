@@ -12,4 +12,4 @@ Dependencies
 
 TODO
 ====
-  * Make user#show
+  * Nessus API Integration

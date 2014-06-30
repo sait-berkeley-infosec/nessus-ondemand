@@ -5,8 +5,9 @@ class UserController < ApplicationController
   end
 
   def show
-    authorize @current_user
     @user = User.find(params[:id])
+    authorize @user
+    @scans = Scan.where(:user => @user.calnet)
   end
 
   def become
