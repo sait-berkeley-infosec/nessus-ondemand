@@ -14,13 +14,35 @@ class Nessus
   @@nessus_pw = ENV['NESSUS_PW']
 
   def self.test_login_logout
-    @@session = self.createSession()
-    if self.killSession(@@session)
-      @@session = nil
-      return true
-    else
-      return false
-    end
+    # Quick test for Rspec
+    self.createSession
+    return self.killSession
+  end
+
+  def self.createScan(target, policy, name, token=@@session)
+    # Creates a scan to be started RIGHT NOW.
+    # Returns a UUID
+    s = seq
+    self.createSession
+    data = RestClient.post @@nessus_host+'scan/new', :token => token, :seq => s,
+      :scan_name => name, :target => target, :policy_id => policy
+    xml = Nokogiri::XML(data)
+    verifyResponse(xml, s)
+    return xml.at_css('uuid').content
+  end
+
+  def self.getPolicies
+    # Returns all of the policies available.
+    # TODO: This doesn't work currently because we can't share or
+    # get policies?
+  end
+
+  def self.getScanResults(uuid, token=@@session)
+    # Given a UUID, gets the results of a scan.
+    # You should probably create multiple filters so that
+    # you can glean different information from these results depending
+    # on the situation.
+    # TODO
   end
 
   private
@@ -28,14 +50,15 @@ class Nessus
       # Takes the environment variables needed
       # Returns randomly generated token.
       s = seq
-      data = RestClient.post @@nessus_host+'login', :login => @@nessus_user, :seq => s, :password => @@nessus_pw
+      data = RestClient.post @@nessus_host+'login', :login => @@nessus_user,
+        :seq => s, :password => @@nessus_pw
       # Put in exceptions for bad server stuff!
       xml = Nokogiri::XML(data)
       verifyResponse(xml, s)
-      return xml.at_css('token').content
+      @@session = xml.at_css('token').content
     end
 
-    def self.killSession(token)
+    def self.killSession(token=@@session)
       # Kills the currently defined session
       # Returns true if successful, false otherwise.
       s = seq()
@@ -47,6 +70,7 @@ class Nessus
         return false
       end
       if xml.at_css('contents').content == 'OK'
+        @@session = nil
         return true
       end
       return false
