@@ -47,7 +47,8 @@
         button type="button" class="close" data-dismiss="alert" aria-hidden="true" &times;
         = flash[:error].html_safe
         ul
-          - @scan.errors.full_messages.each do |e|
+          - if @scan_errors.nil? then @scan_errors = [] end
+          - @scan_errors.each do |e|
             li
               = e
     - if flash[:login]

@@ -12,7 +12,7 @@ class ScanController < ApplicationController
     s_params = scan_params # Strong params
 
     begin
-      s_params[:time] = DateTime.strptime(s_params[:time], '%d %B %Y - %H:%M')
+      s_params[:time] = Time.zone.parse(s_params[:time])
     rescue
       s_params[:time] = "" # If a ill-formatted time is given - XSS attempt, most likely
     end
@@ -29,6 +29,7 @@ class ScanController < ApplicationController
       Rails.logger.debug "Creation failed!"
       Rails.logger.debug @scan.errors.full_messages
       flash[:error] = "<b>Oops!</b> There were some problems with your scan:"
+      @scan_errors = @scan.errors.full_messages or []
       render :action => 'new'
     end
   end
@@ -41,6 +42,11 @@ class ScanController < ApplicationController
   def update
     @scan = Scan.find params[:id]
     authorize @scan
+    begin
+      params[:time] = Time.zone.parse(s_params[:time])
+    rescue
+      params[:time] = "" # If a ill-formatted time is given - XSS attempt, most likely
+    end
     Rails.logger.debug "Attempting to update Scan ##{@scan.id}..."
     Rails.logger.debug @scan.inspect
     if @scan.update_attributes scan_update_params

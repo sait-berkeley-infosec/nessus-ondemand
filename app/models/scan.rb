@@ -28,4 +28,24 @@ class Scan < ActiveRecord::Base
   validates :targets, presence: true, address: true
   validates :time, presence: true, time: true
   validates :policy, presence: true
+
+  def self.export!
+    # Looks for all scans that are ready to be sent off.
+    # Then sends them out through the API.
+    right_now = Time.zone.now()
+    results = []
+    Scan.all.each do |s|
+      if s.time <= right_now and s.uuid == nil
+        results << s
+      end
+    end
+    if Nessus.createSession
+      results.each do |scan|
+        scan.uuid = Nessus.createScan(scan.targets, "Scan ##{scan.id}")
+        Rails.logger.warn "Scan ##{scan.id} exported! - UUID: #{scan.uuid}"
+        scan.save
+      end
+      Nessus.killSession
+    end
+  end
 end

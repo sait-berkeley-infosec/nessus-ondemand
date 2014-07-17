@@ -3,7 +3,7 @@ class CreateScans < ActiveRecord::Migration
     create_table :scans do |t|
       t.integer :user
       t.string :targets
-      t.datetime :goes_off
+      t.datetime :time
       t.integer :policy
       t.string :uuid
       t.string :results

@@ -21,5 +21,6 @@ module NessusOndemand
     # config.i18n.default_locale = :de
     Rails.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDERR))
     config.autoload_paths << Rails.root.join('lib')
+    config.time_zone = "Pacific Time (US & Canada)"
   end
 end

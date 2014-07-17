@@ -12,29 +12,17 @@ class Nessus
   @@nessus_host = ENV['NESSUS_HOST']
   @@nessus_user = ENV['NESSUS_USER']
   @@nessus_pw = ENV['NESSUS_PW']
+  @@nessus_policy = ENV['NESSUS_POLICY']
 
-  def self.test_login_logout
-    # Quick test for Rspec
-    self.createSession
-    return self.killSession
-  end
-
-  def self.createScan(target, policy, name, token=@@session)
+  def self.createScan(target, name, token=@@session)
     # Creates a scan to be started RIGHT NOW.
     # Returns a UUID
     s = seq
-    self.createSession
     data = RestClient.post @@nessus_host+'scan/new', :token => token, :seq => s,
-      :scan_name => name, :target => target, :policy_id => policy
+      :scan_name => name, :target => target, :policy_id => @@nessus_policy
     xml = Nokogiri::XML(data)
     verifyResponse(xml, s)
     return xml.at_css('uuid').content
-  end
-
-  def self.getPolicies
-    # Returns all of the policies available.
-    # TODO: This doesn't work currently because we can't share or
-    # get policies?
   end
 
   def self.getScanResults(uuid, token=@@session)
@@ -42,49 +30,54 @@ class Nessus
     # You should probably create multiple filters so that
     # you can glean different information from these results depending
     # on the situation.
-    # TODO
+    s = seq
+    data = RestClient.post @@nessus_host+'report2/vulnerabilities',
+      :token => token, :seq => s, :report => uuid
+    xml = Nokogiri::XML(data)
+    verifyResponse(xml, s)
+    return xml
   end
 
-  private
-    def self.createSession
-      # Takes the environment variables needed
-      # Returns randomly generated token.
-      s = seq
-      data = RestClient.post @@nessus_host+'login', :login => @@nessus_user,
-        :seq => s, :password => @@nessus_pw
-      # Put in exceptions for bad server stuff!
-      xml = Nokogiri::XML(data)
-      verifyResponse(xml, s)
-      @@session = xml.at_css('token').content
-    end
+  def self.createSession
+    # Takes the environment variables needed
+    # Returns randomly generated token.
+    s = seq
+    data = RestClient.post @@nessus_host+'login', :login => @@nessus_user,
+      :seq => s, :password => @@nessus_pw
+    # Put in exceptions for bad server stuff!
+    xml = Nokogiri::XML(data)
+    verifyResponse(xml, s)
+    @@session = xml.at_css('token').content
+  end
 
-    def self.killSession(token=@@session)
-      # Kills the currently defined session
-      # Returns true if successful, false otherwise.
-      s = seq()
-      data = RestClient.post @@nessus_host+'logout', :token => token, :seq => s
-      xml = Nokogiri::XML(data)
-      begin
-        verifyResponse(xml, s)
-      rescue
-        return false
-      end
-      if xml.at_css('contents').content == 'OK'
-        @@session = nil
-        return true
-      end
+  def self.killSession(token=@@session)
+    # Kills the currently defined session
+    # Returns true if successful, false otherwise.
+    s = seq()
+    data = RestClient.post @@nessus_host+'logout', :token => token, :seq => s
+    xml = Nokogiri::XML(data)
+    begin
+      verifyResponse(xml, s)
+    rescue
       return false
     end
-
-    def self.seq
-      return Random.new.rand(9999).to_s
-    end
-
-    def self.verifyResponse(xml, s)
-      # Checks a Nokogiri XML doc for validity.
-      # Raises errors when it is not.
-      raise StandardError unless xml.at_css('status').content == 'OK'
-      raise StandardError unless xml.at_css('seq').content == s
+    if xml.at_css('contents').content == 'OK'
+      @@session = nil
       return true
     end
+    return false
+  end
+
+    private 
+      def self.seq
+        return Random.new.rand(9999).to_s
+      end
+
+      def self.verifyResponse(xml, s)
+        # Checks a Nokogiri XML doc for validity.
+        # Raises errors when it is not.
+        raise StandardError unless xml.at_xpath('/reply/status').content == 'OK'
+        raise StandardError unless xml.at_css('/reply/seq').content == s
+        return true
+      end
 end

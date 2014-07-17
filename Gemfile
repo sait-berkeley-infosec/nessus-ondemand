@@ -16,6 +16,7 @@ gem 'jquery-rails', '~>3.1.0' # Dependency
 gem 'placeholder-gem', '~>3.0.2' # Placeholder
 gem 'omniauth-cas' # Omniauth strategy for CAS
 gem 'figaro', '~>1.0.0.rc1' # For environment variables
+gem 'rufus-scheduler', '~>3.0.8' # For scheduled tasks
 
 group :development, :test do
   gem 'rspec-rails', '~>2.14.1' # Testing code

@@ -25,12 +25,7 @@ div class="container"
                   td
                     strong Scheduled for...
                   td
-                    = s.text_field :time, :class => "form_datetime date form-control"
-                tr
-                  td
-                    strong Was going to use...
-                  td
-                    = s.text_field :policy, :class => "form-control"
+                    = s.text_field :time, :value => @scan.time.to_s, :class => "form_datetime date form-control"
                 - if @scan.results
                   tr
                     td
