@@ -43,9 +43,18 @@ class Scan < ActiveRecord::Base
       results.each do |scan|
         scan.uuid = Nessus.createScan(scan.targets, "Scan ##{scan.id}")
         Rails.logger.warn "Scan ##{scan.id} exported! - UUID: #{scan.uuid}"
-        scan.save
+        scan.save(:validate => false)
       end
       Nessus.killSession
     end
+  end
+
+  def getResults!
+    # Looks for the results for the given scan.
+    if Nessus.createSession
+      xml = Nessus.getScanResults(self.uuid)
+    end
+    Nessus.killSession
+    return xml
   end
 end
