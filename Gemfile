@@ -18,6 +18,10 @@ gem 'omniauth-cas' # Omniauth strategy for CAS
 gem 'figaro', '~>1.0.0.rc1' # For environment variables
 gem 'rufus-scheduler', '~>3.0.8' # For scheduled tasks
 
+group :production do
+  gem 'passenger', '~>4.0.46'
+end
+
 group :development, :test do
   gem 'rspec-rails', '~>2.14.1' # Testing code
   gem 'selenium-webdriver', '~> 2.39.0' # For testing JS
