@@ -1,4 +1,5 @@
 require 'retriable'
+require 'nokogiri'
 require 'rest_client'
 
 class Nessus
