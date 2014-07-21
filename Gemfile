@@ -28,6 +28,7 @@ group :development, :test do
   gem 'capybara', '~>2.3.0' # For website testing
   gem 'spork-rails', '~>4.0.0' # Ensures clean testing state
   gem 'sqlite3', '~>1.3.9' # Testing
+  gem 'uglifier'
 end
 
 group :test do
