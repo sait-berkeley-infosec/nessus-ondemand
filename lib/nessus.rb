@@ -30,12 +30,30 @@ class Nessus
     # You should probably create multiple filters so that
     # you can glean different information from these results depending
     # on the situation.
+    # Returns a hashtable of vulnerabilities.
     s = seq
     data = RestClient.post @@nessus_host+'report2/vulnerabilities',
       :token => token, :seq => s, :report => uuid
     xml = Nokogiri::XML(data)
     verifyResponse(xml, s)
-    return xml
+    xml_vulns = xml.xpath("//vulnerability")
+    description_url = "https://www.tenable.com/plugins/index.php?view=single&id="
+    vulnerabilities = []
+    # Okay, now we have to order the vulnerabilities from here.
+    xml_vulns.each do |vuln|
+      v = {}
+      v['id'] = vuln.xpath('.//plugin_id')[0].content
+      v['url'] = description_url + v['id']
+      v['name'] = vuln.xpath('.//plugin_name')[0].content
+      sev = vuln.xpath('.//severity')[0].content
+      v['severity'] = severity_to_str(sev)
+      v['severity_id'] = sev.to_i
+      if v['severity_id'] != 0 # I don't care about informational shit
+        vulnerabilities << v
+      end
+    end
+    vulnerabilities = vulnerabilities.sort_by {|key| key['severity_id']}
+    return vulnerabilities.reverse
   end
 
   def self.createSession
@@ -79,5 +97,21 @@ class Nessus
         raise StandardError unless xml.at_xpath('/reply/status').content == 'OK'
         raise StandardError unless xml.at_css('/reply/seq').content == s
         return true
+      end
+
+      def self.severity_to_str(sev)
+        if sev == "0"
+          return "Informational"
+        elsif sev == "1"
+          return "Low"
+        elsif sev == "2"
+          return "Medium"
+        elsif sev == "3"
+          return "High"
+        elsif sev == "4"
+          return "Critical"
+        else
+          return "Unclassified"
+        end
       end
 end

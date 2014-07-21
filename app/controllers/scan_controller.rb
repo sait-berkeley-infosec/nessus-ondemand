@@ -36,6 +36,10 @@ class ScanController < ApplicationController
 
   def edit
     @scan = Scan.find params[:id]
+    if @scan.uuid
+      # Get results
+      @results = @scan.getResults!
+    end
     authorize @scan
   end
 
@@ -49,7 +53,10 @@ class ScanController < ApplicationController
     end
     Rails.logger.debug "Attempting to update Scan ##{@scan.id}..."
     Rails.logger.debug @scan.inspect
-    if @scan.update_attributes scan_update_params
+    if @scan.uuid
+      Rails.logger.warn "Scan##{@scan.id} has already been exported."
+      redirect_to_edit_scan_path(@scan)
+    elsif @scan.update_attributes scan_update_params
       Rails.logger.warn "Scan ##{@scan.id} updated!"
       Rails.logger.debug @scan.inspect
       redirect_to edit_scan_path(@scan)

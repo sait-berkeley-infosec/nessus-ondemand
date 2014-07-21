@@ -15,7 +15,10 @@ div class="container"
                td 
                  = s.id
                td 
-                 = link_to Address.find(s.targets).location, edit_scan_path(s)
+                 - begin
+                     = link_to Address.find(s.targets).location, edit_scan_path(s)
+                 - rescue
+                     = link_to "Unknown Location", edit_scan_path(s)
                td 
                  - user = User.find_by_calnet(s.user)
                  = link_to user.name, user_path(user.id)

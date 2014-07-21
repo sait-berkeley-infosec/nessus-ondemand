@@ -1,4 +1,21 @@
 Addresses:
-    Location 1:
-        - 169.229.0.1
-        - 169.229.0.2
+    U1 Admin Net:
+        - 169.229.64.0/24
+    U2 Admin Net:
+        - 169.229.65.0/25
+    U3 Admin Net:
+        - 169.229.66.0/24
+    U4 Admin Net:
+        - 169.229.67.0/24
+    U5 Admin Net:
+        - 169.229.68.0/24
+    RSSB Server Network:
+        - 169.229.70.0/24
+        - 169.229.71.0/24
+        - 169.229.79.128/25
+    UVA Admin Net:
+        - 169.229.124.128/25
+    RSSB 3rd Floor:
+        - 169.229.127.0/24
+    RSSB Other Floor:
+        - 169.229.126.0/24

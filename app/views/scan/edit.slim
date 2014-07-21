@@ -33,4 +33,23 @@ div class="container"
                     td
                       = @scan.results
             p
-              = s.submit "Update!", :class => "btn btn-primary btn-lg btn-block"
+              - if !@scan.uuid
+                = s.submit "Update!", :class => "btn btn-primary btn-lg btn-block"
+    - if @results
+      div class="panel panel-default"
+        div class="panel-heading"
+          h3 class="panel-title" Vulnerabilites
+          p Please allow ten minutes for scan to complete!
+        div class="panel-body"
+          table class="table"
+            thead
+              tr
+                th Plugin Name
+                th Severity
+            tbody
+              - @results.each do |v|
+                tr
+                  td
+                    = link_to v['name'], v['url']
+                  td
+                    = v['severity']
