@@ -51,6 +51,7 @@ GEM
     compass-rails (1.1.7)
       compass (>= 0.12.2)
       sprockets (<= 2.11.0)
+    daemon_controller (1.2.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     ffi (1.9.3)
@@ -87,6 +88,10 @@ GEM
       addressable (~> 2.3)
       nokogiri (~> 1.6)
       omniauth (~> 1.1.0)
+    passenger (4.0.46)
+      daemon_controller (>= 1.2.0)
+      rack
+      rake (>= 0.8.1)
     placeholder-gem (3.0.2)
       railties (>= 3.1)
     polyglot (0.3.5)
@@ -193,6 +198,7 @@ DEPENDENCIES
   fuubar
   jquery-rails (~> 3.1.0)
   omniauth-cas
+  passenger (~> 4.0.46)
   placeholder-gem (~> 3.0.2)
   pundit (~> 0.2.3)
   rails (= 4.1.1)
